@@ -20,7 +20,6 @@
 struct console {
   int vfd;                      /* fd of vcsa device */
   int tfd;                      /* fd of tty device */
-  int printed;
   struct console_attributes {
     unsigned char lines;
     unsigned char columns;
