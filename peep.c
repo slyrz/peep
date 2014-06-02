@@ -99,7 +99,7 @@ console_read_core (struct console *cnsl, void *dst, size_t size)
 
   ret = read (cnsl->vfd, dst, size);
   if (ret < (ssize_t) size)
-    err (EXIT_FAILURE, "read(%lu) == %ld", size, ret);
+    err (EXIT_FAILURE, "read(%u) == %d", size, ret);
 }
 
 static void
@@ -196,6 +196,7 @@ console_print (struct console *cnsl)
 
   for (i = 0; i < cnsl->attributes.lines; i++) {
     p = 0;
+    c = 0;
     for (j = 0; j < cnsl->attributes.columns; j++) {
       data = (cnsl->chars[i][j] & 0xff);
       attr = (cnsl->chars[i][j] & ~cnsl->mask) >> 8;
