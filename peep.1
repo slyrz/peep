@@ -1,0 +1,23 @@
+.TH PEEP "1" "June 2014" "peep" "User Commands"
+.SH NAME
+peep \- view the contents of virtual consoles
+.SH SYNOPSIS
+.B peep
+[\fI-lpw\fR] \fItty\fR
+.SH DESCRIPTION
+.PP
+Prints the contents of Linux virtual console screens. The argument \fItty\fR 
+must be the name, number or path of the terminal you want to view.
+.TP
+\fB\-l\fR
+Use the current terminal's foreground and background colors as defaults.
+.TP
+\fB\-p\fR
+Ignore all text attributes and print plain text.
+.TP
+\fB\-w\fR
+Watch the console screen. This option causes \fBpeep\fR to stay alive and
+refresh the output every second.
+.PP
+.SH "SEE ALSO"
+\fBvcs\fP(4), \fBtty\fP(4)
