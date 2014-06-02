@@ -92,15 +92,14 @@ console_open (struct console *cnsl, int num)
     err (EXIT_FAILURE, "ioctl(%s, VT_GETHIFONTMASK)", tty_path);
 }
 
-static void
-console_read_core (struct console *cnsl, void *dst, size_t size)
-{
-  ssize_t ret;
-
-  ret = read (cnsl->vfd, dst, size);
-  if (ret < (ssize_t) size)
-    err (EXIT_FAILURE, "read(%u) == %d", size, ret);
-}
+/**
+ * Macro used to avoid nasty long lines.
+ */
+#define read_data(cnsl,dst,size) \
+  do { \
+    if (read ((cnsl)->vfd, (dst), (size)) < (ssize_t) (size)) \
+      err (EXIT_FAILURE, "read"); \
+  } while (0)
 
 static void
 console_read (struct console *cnsl)
@@ -111,14 +110,14 @@ console_read (struct console *cnsl)
    * First read gives us the attributes (width, height, x, y), the following
    * reads the characters.
    */
-  console_read_core (cnsl, &cnsl->attributes, sizeof (struct console_attributes));
+  read_data (cnsl, &cnsl->attributes, sizeof (struct console_attributes));
 
   /**
    * No need to check if the previously read console size fits into buffer
    * since the buffer size is set to the data type's maximum value.
    */
   for (i = 0; i < cnsl->attributes.lines; i++)
-    console_read_core (cnsl, cnsl->chars[i], cnsl->attributes.columns * sizeof (unsigned short));
+    read_data (cnsl, cnsl->chars[i], cnsl->attributes.columns * sizeof (unsigned short));
 
   /**
    * Prepare for the next call.
